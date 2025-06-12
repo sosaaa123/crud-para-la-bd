@@ -20,4 +20,72 @@ def borrarAuto(auto_id):
 print(agregarAuto(2,"Ferrari", 15, 100000))
 print(agregarAuto(3,"Fiat Duna", 10, 15000))"""
 
-print(borrarAuto(2))
+#Dos funciones: una para vincular un paquete de viajes a un auto y otra para vincular un viaje simple a un auto.
+
+def vinculaVSaAuto(vs_id, at_id):
+    #vs_id el viaje simple al que se le va a asignar un auto
+    #at_Id el auto al que se le va a asignar un viaje simple
+
+    cursor.execute("INSERT INTO vs_at (vs_id, at_id) VALUES(%s,%s)",(vs_id, at_id))
+    conexionViajes.commit()
+
+    return {"Mensaje": "Se ha asignado un auto a un viaje simple"}
+
+def vincularPVaAuto(pv_id, at_id):
+    #pv_id el codigo de paquete de viajes
+    #at_id el id del auto
+    cursor.execute("INSERT INTO exc_at (pv_id, at_id) VALUES(%s,%s)",(pv_id, at_id))
+
+    return {"Mensaje": "Se ha asignado un auto a un paquete de viajes"}
+
+
+def verAutoID(auto_id):
+    cursor.execute("SELECT * FROM auto WHERE auto_Id = %s", (auto_id,))
+    respuesta = cursor.fetchall()
+    respuesta  = {
+        "auto id": respuesta[0][0],
+        "modelo": respuesta[0][1],
+        "disponibles": respuesta[0][2],
+        "precio por dia": respuesta[0][3]
+    }    
+
+    
+
+    return respuesta
+
+
+
+
+
+#Listo
+def verAutoPV(pv_id):
+    cursor.execute("SELECT * FROM exc_at WHERE pv_id = %s", (pv_id,))
+    respuesta = cursor.fetchall()
+    autos = []
+    autoInfo = []
+    for i in respuesta[0]:
+        autos.append(respuesta[1][1])
+    for auto in autos:
+        r = verAutoID(auto)
+        autoInfo.append(r)
+    
+    return autoInfo
+
+#Listo
+def verAutoVs(vs_id):
+    cursor.execute("SELECT * FROM vs_at WHERE vs_id = %s", (vs_id,))
+    respuesta = cursor.fetchall()
+    autos = []
+    autoInfo = []
+    for i in respuesta[0]:
+        autos.append(respuesta[1][1])
+    for auto in autos:
+        r = verAutoID(auto)
+        autoInfo.append(r)
+    
+    return autoInfo
+
+
+
+
+

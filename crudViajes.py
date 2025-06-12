@@ -8,8 +8,7 @@ from datetime import datetime
 #No se porque le puse conexion viaje si va a funcionar para todas las tablas de la bd general
 
 
-#Que no se eliminen los viajes cuando lleguen a 0 cuos hasta despes de cierto tiepo en caso de que quieran cancelar la compra
-
+#Que no se eliminen los viajes cuando lleguen a 0 cupos hasta despes de cierto tiepo en caso de que quieran cancelar la compra
 
 #Cosas que me faltan CRUD y consultas para la base Autos
 #Funciones para actualizar cada tabla (tengo que hacer uno de cada metodo)
@@ -244,7 +243,6 @@ def verExcursiones(codigoViaje):
 
 
 #cursor.execute("INSERT INTO pv_exc (pv_id, exc_id)")
-
 
 
 
