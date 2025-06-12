@@ -1,5 +1,6 @@
 import psycopg2
 import datetime #Para convertir variables a tipo date para postgre
+from crudExcursiones import paqueteViajesExcursion
 from datetime import datetime
 
 

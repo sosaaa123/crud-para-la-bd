@@ -2,7 +2,9 @@
 import psycopg2
 from crudViajes import convertirDate, convertirHora
 
-
+dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
+conexionViajes = psycopg2.connect(dns) 
+cursor = conexionViajes.cursor()
 
 #Convertir a diccionario los datos de la Tabla Ventas
 #Preguntar a santi porque ventas no tiene usuario id.
@@ -22,7 +24,7 @@ def convertirDatosVentas(respuesta):
             tipo = "Paquete de Viaje"
         #Consultar si es necesario agregar a la tabla venta un campo que indique si la venta es de un paquete de viajes o de un viaje simple
         dicConvertido.append({
-            
+
                             "Id Venta": item[0],
                              "Fecha": fecha,
                              "Hora": hora,
@@ -33,7 +35,7 @@ def convertirDatosVentas(respuesta):
                              "Tipo": tipo, 
                              "Precio": item[8]})
 
-        return = dicConvertido
+        return dicConvertido
 
 def verVentas(respuesta):
     #En la tabla Ventas
@@ -45,9 +47,16 @@ def verVentas(respuesta):
     return nrepuesta
 
 
-def sumarVenta(id_viaje, cantidad):
-    cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_pv, precio)")
+def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio):
+        fecha = convertirDate(fecha)
+        hora = convertirHora(hora)
+        cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad,codigo_vs, codigo_pv, precio))
+        conexionViajes.commit()
 
+        return {"Mensaje":"Venta sumada"}
+
+
+print(sumarVenta(1,"27/10/25","10:10","Transferncia", False, 2, 679848, None, 56000))
 
 
 

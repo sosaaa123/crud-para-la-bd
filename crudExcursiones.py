@@ -21,6 +21,21 @@ def eliminarExcursion(excursion_id):
 
     return {"Mensaje": "Borrado exitosamente"}
 
+#Funcion para enlazar un paquete de viaje con una excursion.
+#Primero el id del paquete de viajes despues el id de la excursion.
+def paqueteViajesExcursion(pv_id, exc_id):
+    cursor.execute("INSERT INTO pv_exc (pv_id, exc_id) VALUES (%s,%s)", (pv_id, exc_id))
+    conexionViajes.commit()
+
+    return {"Mensaje":"Se ha vinculado una excursion con un paquete de viajes"}
+
+def buscarExcursionorID()
+
+
+"""print(paqueteViajesExcursion(715, 1))
+print(paqueteViajesExcursion(715, 2))"""
+
+
 
 
 
