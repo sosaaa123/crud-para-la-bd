@@ -29,6 +29,9 @@ def paqueteViajesExcursion(pv_id, exc_id):
 
     return {"Mensaje":"Se ha vinculado una excursion con un paquete de viajes"}
 
+
+
+
 def buscarExcursionporId(excursion_id):
     cursor.execute("SELECT * FROM excursiones WHERE excursion_id = %s", (excursion_id,))
     respuesta = cursor.fetchall()
@@ -52,12 +55,33 @@ def buscarExcursionporId(excursion_id):
 
     return dicExcursiones
 
+#Esta funcion trae todas las excursiones que el paquete de viajes que se le ingresa
+def verExcursionPaquete(pv_id):
+    cursor.execute("SELECT exc_id FROM pv_exc WHERE pv_id = %s", (pv_id,))
+    respuesta = cursor.fetchall()
+    lista_pv_ids = []
+    for excursion in respuesta:
+        lista_pv_ids.append(excursion[0])
+
+    excursiones = []
+    for i in lista_pv_ids:
+        r = buscarExcursionporId(i)
+        excursiones.append(r)
+
+    return excursiones
+        
+
+
+        
+
+print(verRelacion(715))
+
 
 #print(buscarExcursionporId(6))
 
 #print(cursor.execute("SELECT * FROM excursiones"))
 
-print(buscarExcursionporId(5))
+
 
 """print(paqueteViajesExcursion(715, 1))
 print(paqueteViajesExcursion(715, 2))"""
