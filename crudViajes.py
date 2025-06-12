@@ -103,8 +103,10 @@ def verPaquetedeViajes():
     return nrepuesta
 
 
+    
 
-def verExcursiones(codigoViaje):
+
+"""def verExcursiones(codigoViaje):
     #Preguntar a santi si la tabla excursiones no tiene que tener un campo que sea codigo de viaje al que esta anclado
     #Hay que revisar esta funcion porque codigo de viaje no existe la tabla excursiones
     cursor.execute("SELECT * FROM excursiones WHERE codigodeviaje = %s", (codigoDeViaje))
@@ -118,7 +120,8 @@ def verExcursiones(codigoViaje):
                          "Final": respuesta[3]
     })
 
-    return(excursionDic)
+    return(excursionDic)"""
+
 
 
 
