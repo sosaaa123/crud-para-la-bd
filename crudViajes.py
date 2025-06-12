@@ -19,44 +19,74 @@ cursor = conexionViajes.cursor()
 
 #Funcion para transformar los datos de la consulta en Json para enviar.
 #Convierte la respuesta de la tabla viaje simple (TVS) a diccionario
-def convertirDatosTVS(respuesta):
-    dicConvertido = []
-    for item in respuesta:
-        dicConvertido.append({"Nombre": item[0], "Descripcion": item[1],"Precio":item[2] ,"Origen": item[3],"Destino": item[4], "Transporte": item[5], "Fecha": item[6], "Hora": item[7], "Cupos": item[8], "Duracion": item[9], "Tipo_de_viaje": item[10]})
 
-        return dicConvertido
+
+
+
+#codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje
+
+ 
+
+def convertirDatosTVS(respuesta):
+    
+    registroListas = []
+    for item in respuesta:
+        dicConvertido = []
+        fecha = item[7]
+        fecha = fecha.strftime("%Y-%m-%d")
+        hora = item[8]
+        hora = hora.strftime("%H:%M:%S")
+           
+
+        dicConvertido.append({"Codigo": item[0],"Nombre": item[1], "Descripcion": item[2],"Precio":item[3] ,"Origen": item[4],"Destino": item[5], "Transporte": item[6], "Fecha": fecha, "Hora": hora, "Cupos": item[9], "Duracion": item[10], "Tipo_de_viaje": item[11]})
+        #dicConvertido.append()
+        registroListas.append(dicConvertido)
+
+    return registroListas
+    
+
+
+        
 
 #Convierte la respuesta de la tabla paquete de viajes (TVS) a diccionario
 def convertirDatosTPV(respuesta):
-    dicConvertido = []
+    registroListas = []
     for item in respuesta:
-        dicConvertido.append({"Nombre": item[0], "Precio": item[1], "Origen": item[2],"Destino": item[3], "Estadia": item[4], "Tipo": item[5], "Descripcion": item[6], "Cupos": item[7], "Duracion": item[8], "Tipo_de_viaje": item[9], "Hora": item[10]})
+        dicConvertido = []
+        fecha = item[12]
+        fecha = fecha.strftime("%Y-%m-%d")
+        hora = item[11]
+        hora = hora.strftime("%H:%M:%S")
+        dicConvertido.append({"Codigo": item[0], "Nombre": item[1], "Precio": item[2], "Origen": item[3],"Destino": item[4], "Estadia": item[5], "Tipo": item[6], "Descripcion": item[7], "Cupos": item[8], "Duracion": item[9], "Tipo_de_viaje": item[10], "Hora": hora, "Fecha": fecha})
 
-        return  dicConvertido
+        registroListas.append(dicConvertido)
+    return registroListas
 
-
+#codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, autos
 
 
 
 #-------- SANTIAGO ATENTO #f9ed32 -------------
 #Funcion para traer todos los datos visibles para el Frontened 1
 
+
+
 def verViajesSimples():
     #falta el precio revisar cuando santi actualice
-    cursor.execute("SELECT nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje FROM viaje_simple")
-    respuesta = cursor.execute.fetchall()
+    cursor.execute("SELECT * FROM viaje_simple")
+    respuesta = cursor.fetchall()
 
-    nrepuesta = convertirDatos(respuesta)
+    nrepuesta = convertirDatosTVS(respuesta)
 
     return nrepuesta
 
 
 def verPaquetedeViajes():
     #En la tabla paquete de viaje falta descripcion.
-    cursor.execute("SELECT nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion_aprox, hora tipo FROM paquete_de_viajes")
-    respuesta = cursor.execute.fetchall()
+    cursor.execute("SELECT * FROM paquete_de_viajes")
+    respuesta = cursor.fetchall()
 
-    nrepuesta = convertirDatos(respuesta)
+    nrepuesta = convertirDatosTPV(respuesta)
 
     return nrepuesta
 
@@ -99,16 +129,16 @@ def restarCupoTPV(codigoViaje, cantidad):
 
 
 #Metodo que solo aplicaria para el frontened del admin
-def agregarViajeSimple(nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje):
-    cursor.execute("INSERT INTO viaje_simple (codigo, nombre, descripcion, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (codigo, nombre, descripcion, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje) )
+def agregarViajeSimple(codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje):
+    cursor.execute("INSERT INTO viaje_simple (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje))
     conexionViajes.commit()
 
     return {"Mensaje": "Nuevo viaje simple agregado"}
 
 
 #Metodo que solo aplicaria para el frontened del admin
-def agregarPaquetedeViaje(codigo, nombre, precio, origen, destino, estadia, tipo, hora, descripcion, cupos, duracion_aprox, hora):
-    cursor.execute("INSERT INTO paquete_de_viajes (codigo, nombre, precio, origen, destino, estadia, tipo, hora, cupos, duracion_aprox) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", () )
+def agregarPaquetedeViaje(codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha):
+    cursor.execute("INSERT INTO paquete_de_viajes (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha) )
     conexionViajes.commit()
     #--------- Revisar porque esta incopleta hay que ver que metodos usar para ingresar excursiones -------- 
 
@@ -155,7 +185,6 @@ def consultarCuposTPV(codigoViaje):
 def convertirDate(fecha):
     #24/10/2006
     nfecha = datetime.strptime( fecha, "%d/%m/%y").date()
-    nfecha = nfecha.strftime("%d/%m/%Y")#La pongo en notacion nuestra
     return nfecha 
 
 def convertirHora(hora):
@@ -163,14 +192,50 @@ def convertirHora(hora):
     nhora = datetime.strptime(hora, "%H:%M").time()
     return  nhora
 
-#agregarViajeSimple("3444Neuquen","Neuquen", "Viaje de junio a Neuquen", 28000, "Buenos Aires, Aeropuerto", "Neuquen", "Avion", convertirDate("24/10/2025"), convertirHora("10:00") , 30, , "Ida y Vuelta")
+"""agregarViajeSimple(672822248,"Cordoba", "Viaje rapido a Cordoba", 30000, "Puerto Madero", "Cordoba", "Autobus", convertirDate("2/11/25"), convertirHora("9:00") , 50, "1 dia" , "Ida")
+agregarPaquetedeViaje(7515, "Vacaciones a Italia", 90000, "Buenos Aires, Aeropuerto", "Italia" ,"10 dias en Italia, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
+
+agregarViajeSimple(676713848,"Jamaica", "Vuelo a Jamaica", 30000, "Buenos Aires, Aeropuerto", "Jamaica", "Avion", convertirDate("2/11/25"), convertirHora("9:00") , 50, "2 dias" , "Ida y Vuelta")
+agregarPaquetedeViaje(715, "Vacaciones a Brasil", 10000, "Buenos Aires, Aeropuerto", "Brasil" ,"7 dias en Brasil, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para toda la familia en dias festivos, para conocer nuevos paises. Una experiencia unica.", 70, "1 dia","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
+
+agregarViajeSimple(6777848,"Marruecos", "Viaje rapido a Marruecos", 20000, "Buenos Aires, Aeropuerto", "Marruecos", "Avion", convertirDate("2/11/25"), convertirHora("9:00") , 50, "2 dias" , "Ida")
+agregarPaquetedeViaje(7500, "Vacaciones a Haiti", 90000, "Buenos Aires, Aeropuerto", "Haiti" ,"10 dias en Haiti, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
+#codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha"""
+
+"""print(convertirHora("10:00"))
+print(convertirDate("24/10/06"))"""
+
+
+#quitarPaquetedeViaje(2455)
+
+"""r = verViajesSimples()
+print(r[2])
+#print(verPaquetedeViajes())"""
+r = verPaquetedeViajes()
+print(r[4])
+
+
+"""cursor.execute("SELECT fecha, hora FROM paquete_de_viajes")
+respuesta = cursor.fetchall()"""
+
+#print(respuesta[0][0])
+"""cursor.execute("SELECT * FROM paquete_de_viajes")
+respuesta = cursor.fetchall()
+registrosLista = []
+for registro in respuesta:
+    #print("------------ registro 1 -----")
+    diccionario = {"codigo": registro[0], "Nombre": registro[1]}
+    for item in registro:
+        print(item)
+        print("$$$$$")
+print(diccionario)"""
 
 
 
-print(convertirHora("10:00"))
-print(convertirDate("24/10/06"))
+#print(respuesta(1))
 
 
+#print(convertirHora("22:00"), convertirDate("10/11/25"))
 
 
 
