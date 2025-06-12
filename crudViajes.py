@@ -7,25 +7,15 @@ from datetime import datetime
 
 
 
-#Preguntar a santi por una funcion que verifique la cantidad de cupos de cada viaje y en caso de que sea 0 (eliminar viaje? dar de baja?)
-#Eliminar de la base de datos cuando llegue a 0
-
-#Si se quisiera actualizar o modificar algun viaje (hacer metodo para cada campo?)
+#Cosas que me faltan CRUD y consultas para la base Autos
+#Funciones para actualizar cada tabla (tengo que hacer uno de cada metodo)
+#Funciones para tablas clientes
 
 dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
 conexionViajes = psycopg2.connect(dns) 
 cursor = conexionViajes.cursor()
 
-
-#Funcion para transformar los datos de la consulta en Json para enviar.
 #Convierte la respuesta de la tabla viaje simple (TVS) a diccionario
-
-
-
-
-#codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje
-
- 
 
 def convertirDatosTVS(respuesta):
     
@@ -46,8 +36,6 @@ def convertirDatosTVS(respuesta):
     
 
 
-        
-
 #Convierte la respuesta de la tabla paquete de viajes (TVS) a diccionario
 def convertirDatosTPV(respuesta):
     registroListas = []
@@ -62,27 +50,18 @@ def convertirDatosTPV(respuesta):
         registroListas.append(dicConvertido)
     return registroListas
 
-#codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, autos
-
-
-
-#-------- SANTIAGO ATENTO #f9ed32 -------------
-#Funcion para traer todos los datos visibles para el Frontened 1
-
 
 
 def verViajesSimples():
-    #falta el precio revisar cuando santi actualice
+
     cursor.execute("SELECT * FROM viaje_simple")
     respuesta = cursor.fetchall()
-
     nrepuesta = convertirDatosTVS(respuesta)
 
     return nrepuesta
 
 
 def verPaquetedeViajes():
-    #En la tabla paquete de viaje falta descripcion.
     cursor.execute("SELECT * FROM paquete_de_viajes")
     respuesta = cursor.fetchall()
 
@@ -91,7 +70,7 @@ def verPaquetedeViajes():
     return nrepuesta
 
 
-#Funcion especifica ver excursiones dw un viaje en especifico
+
 def verExcursiones(codigoViaje):
     cursor.execute("SELECT * FROM excursiones WHERE ID")
 
@@ -104,6 +83,7 @@ def verExcursiones(codigoViaje):
 
 
 
+#Volver a ver esta no funciona
 def restarCupoTVS(codigoViaje, cantidad):
     cursor.execute("SELECT cupo FROM viaje_simple WHERE codigo = %s", (codigoViaje))
     ncupos = cursor.fetchall()
@@ -140,7 +120,7 @@ def agregarViajeSimple(codigo, nombre, descripcion, precio, origen, destino, tra
 def agregarPaquetedeViaje(codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha):
     cursor.execute("INSERT INTO paquete_de_viajes (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha) )
     conexionViajes.commit()
-    #--------- Revisar porque esta incopleta hay que ver que metodos usar para ingresar excursiones -------- 
+    
 
     return {"Mensaje": "Nuevo viaje simple agregado"}
 
@@ -181,9 +161,9 @@ def consultarCuposTPV(codigoViaje):
     else:
         return {"Mensaje":"Sigue con cupos disponibles."}
 
-#Funcion Para hacer tipo dae
+#Funcion Para hacer tipo date
 def convertirDate(fecha):
-    #24/10/2006
+    #La fecha debe estar pasada de esta manera 24/10/06
     nfecha = datetime.strptime( fecha, "%d/%m/%y").date()
     return nfecha 
 
@@ -192,6 +172,11 @@ def convertirHora(hora):
     nhora = datetime.strptime(hora, "%H:%M").time()
     return  nhora
 
+
+
+
+
+#Esto lo dejo por si tengo que cargar mas datos desde aca
 """agregarViajeSimple(672822248,"Cordoba", "Viaje rapido a Cordoba", 30000, "Puerto Madero", "Cordoba", "Autobus", convertirDate("2/11/25"), convertirHora("9:00") , 50, "1 dia" , "Ida")
 agregarPaquetedeViaje(7515, "Vacaciones a Italia", 90000, "Buenos Aires, Aeropuerto", "Italia" ,"10 dias en Italia, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
 
@@ -202,40 +187,7 @@ agregarViajeSimple(6777848,"Marruecos", "Viaje rapido a Marruecos", 20000, "Buen
 agregarPaquetedeViaje(7500, "Vacaciones a Haiti", 90000, "Buenos Aires, Aeropuerto", "Haiti" ,"10 dias en Haiti, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
 #codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha"""
 
-"""print(convertirHora("10:00"))
-print(convertirDate("24/10/06"))"""
 
-
-#quitarPaquetedeViaje(2455)
-
-"""r = verViajesSimples()
-print(r[2])
-#print(verPaquetedeViajes())"""
-r = verPaquetedeViajes()
-print(r[4])
-
-
-"""cursor.execute("SELECT fecha, hora FROM paquete_de_viajes")
-respuesta = cursor.fetchall()"""
-
-#print(respuesta[0][0])
-"""cursor.execute("SELECT * FROM paquete_de_viajes")
-respuesta = cursor.fetchall()
-registrosLista = []
-for registro in respuesta:
-    #print("------------ registro 1 -----")
-    diccionario = {"codigo": registro[0], "Nombre": registro[1]}
-    for item in registro:
-        print(item)
-        print("$$$$$")
-print(diccionario)"""
-
-
-
-#print(respuesta(1))
-
-
-#print(convertirHora("22:00"), convertirDate("10/11/25"))
 
 
 
