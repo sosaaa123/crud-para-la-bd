@@ -8,13 +8,13 @@ cursor = conexionViajes.cursor()
 
 
 #Preguntar si la excursiones ya vienen incluidas en el paquete de viaje o hay que comprar.
-
+#No me acuerdo
 def agregarExcursiones(excursion_id, nombre, inicio, final, descripcion, lugar):
     cursor.execute("INSERT INTO excursiones (excursion_id, nombre, inicio, final, descripcion, lugar) VALUES(%s,%s,%s,%s,%s,%s)", (excursion_id, nombre, inicio, final, descripcion, lugar))
     conexionViajes.commit()
 
     return {"Mensaje": "Se ha agregado la excursion exitosamente"}
-
+#No me acuerdo
 def eliminarExcursion(excursion_id):
     cursor.execute("DELETE FROM excursiones WHERE excursion_id = %s", (excursion_id,))
     conexionViajes.commit()
@@ -23,6 +23,7 @@ def eliminarExcursion(excursion_id):
 
 #Funcion para enlazar un paquete de viaje con una excursion.
 #Primero el id del paquete de viajes despues el id de la excursion.
+#Es nueva
 def paqueteViajesExcursion(pv_id, exc_id):
     cursor.execute("INSERT INTO pv_exc (pv_id, exc_id) VALUES (%s,%s)", (pv_id, exc_id))
     conexionViajes.commit()
@@ -31,7 +32,7 @@ def paqueteViajesExcursion(pv_id, exc_id):
 
 
 
-
+#Es nueva(Solo es necesaria por la funcion que esta abajo)
 def buscarExcursionporId(excursion_id):
     cursor.execute("SELECT * FROM excursiones WHERE excursion_id = %s", (excursion_id,))
     respuesta = cursor.fetchall()
@@ -56,6 +57,7 @@ def buscarExcursionporId(excursion_id):
     return dicExcursiones
 
 #Esta funcion trae todas las excursiones que el paquete de viajes que se le ingresa
+#Es nueva
 def verExcursionPaquete(pv_id):
     cursor.execute("SELECT exc_id FROM pv_exc WHERE pv_id = %s", (pv_id,))
     respuesta = cursor.fetchall()

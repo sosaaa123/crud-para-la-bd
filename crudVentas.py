@@ -106,8 +106,7 @@ def buscarVentaId(vtas_id):
 """print(sumarVenta(2,"14/11/25","9:11","Transferncia", True, 1, None, 715, 10000))
 print(sumarVenta(3,"21/12/25","21:15","Transferncia", False, 1, None, 2455, 70000))
 print(sumarVenta(4,"20/1/25","20:13","Transferncia", True, 1, 679848, None, 27000))"""
-r = buscarVentaId(3)
-print(r[2])
+
 #print(r.cantidad) necesito conzeguir cantidad
 
     

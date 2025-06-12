@@ -57,7 +57,7 @@ def verAutoID(auto_id):
 
 
 
-#Listo
+#Listo, nueva anda
 def verAutoPV(pv_id):
     cursor.execute("SELECT * FROM exc_at WHERE pv_id = %s", (pv_id,))
     respuesta = cursor.fetchall()
@@ -71,7 +71,7 @@ def verAutoPV(pv_id):
     
     return autoInfo
 
-#Listo
+#Listo, es nueva anda
 def verAutoVs(vs_id):
     cursor.execute("SELECT * FROM vs_at WHERE vs_id = %s", (vs_id,))
     respuesta = cursor.fetchall()
