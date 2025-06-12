@@ -69,26 +69,7 @@ def verExcursionPaquete(pv_id):
         excursiones.append(r)
 
     return excursiones
-        
-
-
-        
-
-print(verRelacion(715))
-
-
-#print(buscarExcursionporId(6))
-
-#print(cursor.execute("SELECT * FROM excursiones"))
-
-
-
-"""print(paqueteViajesExcursion(715, 1))
-print(paqueteViajesExcursion(715, 2))"""
-
-
-
-
+    
 
 
 

@@ -96,8 +96,10 @@ def buscarVentaId(vtas_id):
 
 
 #Para restaurar el stock cuando se cancela una compra(la compra se elimina)
-def cancelarCompra(vtas_id):
-    venta = buscarVentaId(vtas_id)
+"""def cancelarCompra(vtas_id):
+    venta = buscarVentaId(vtas_id)"""
+
+    
 
 
 # 1 viaje simple 2 paquete de viaje
@@ -105,6 +107,7 @@ def cancelarCompra(vtas_id):
 print(sumarVenta(3,"21/12/25","21:15","Transferncia", False, 1, None, 2455, 70000))
 print(sumarVenta(4,"20/1/25","20:13","Transferncia", True, 1, 679848, None, 27000))"""
 r = buscarVentaId(3)
+print(r[2])
 #print(r.cantidad) necesito conzeguir cantidad
 
     
