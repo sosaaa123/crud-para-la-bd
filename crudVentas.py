@@ -1,6 +1,6 @@
 #La tabla que maneja este crud es Ventas
 import psycopg2
-from crudViajes import convertirDate, convertirHora
+from crudViajes import convertirDate, convertirHora, restarCupoTPV, restarCupoTVS
 
 dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
 conexionViajes = psycopg2.connect(dns) 
@@ -51,14 +51,21 @@ def verVentas():
 
     return nrespuesta
 
-
+#Modificada, resta los cupos !!!!!!!
 def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio):
         fecha = convertirDate(fecha)
         hora = convertirHora(hora)
         cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad,codigo_vs, codigo_pv, precio))
-        conexionViajes.commit()
+        
+        if(codigo_vs):
+            restarCupoTVS(codigo_vs, cantidad)
+        else:
+            restarCupoTPV(codigo_pv, cantidad)
 
+        conexionViajes.commit()
         return {"Mensaje":"Venta sumada"}
+
+print(sumarVenta(7,"12/12/25","9:11","Transferencia", True, 1, None, 715, 10000))
 
 
 def buscarVentaId(vtas_id):
