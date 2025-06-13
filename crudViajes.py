@@ -102,29 +102,6 @@ def verPaquetedeViajes():
     return nrepuesta
 
 
-
-
-
-"""def verExcursiones(codigoViaje):
-    #Preguntar a santi si la tabla excursiones no tiene que tener un campo que sea codigo de viaje al que esta anclado
-    #Hay que revisar esta funcion porque codigo de viaje no existe la tabla excursiones
-    cursor.execute("SELECT * FROM excursiones WHERE codigodeviaje = %s", (codigoDeViaje))
-    respuesta = cursor.fetchall()
-    excursionDic = []
-    excursionDic.append({
-
-                        "Excursion ID": respuesta[0],
-                         "Nombre": respuesta[1],
-                         "Inicio": respuesta[2],
-                         "Final": respuesta[3]
-    })
-
-    return(excursionDic)"""
-
-
-
-
-
 #Supongamos que se quiera hacer una compra de boleto
 #Primero se debe hacer una verificacion si existe ese usuario
 #Recibe el codigo de viaje que ha seleccionado el usuario.
@@ -215,24 +192,31 @@ def quitarPaquetedeViaje(codigoDeViaje):
 #Podriamos agregar un campo que sea "Estado" y pongo si esta disponible o no
 #Sirve asi no tendriamos que eliminar los viajes cuando cupos llegue a 0 si no que simplemente lo pasamos aa un estado no disponible.
 
+
+#ESTAS REVISO NI BIEN LLEGUE
 def consultarCuposTVS(codigoViaje):
-    cursor.execute("SELECT cupo FROM viaje_simple WHERE codigo = %s", (codigoViaje,) )
+    cursor.execute("SELECT cupos FROM viaje_simple WHERE codigo = %s", (codigoViaje,) )
     ncupos = cursor.fetchall()
 
     if (ncupos == 0):
-        quitarViajesimple(codigoViaje)
+        cursor.execute("UPDATE viaje_simple SET estado = %s WHERE codigo = %s",("No disponible", codigoViaje))
     else:
         return {"Mensaje":"Sigue con cupos disponibles."}
 
+print(consultarCuposTPV(755))
+
+#ESTAS REVISO NI BIEN LLEGUE
 #Lo mismo para la tabla paquetes_de_viajes
 def consultarCuposTPV(codigoViaje):
-    cursor.execute("SELECT cupo FROM paquete_de_viajes WHERE codigo = %s", (codigoViaje) )
+    cursor.execute("SELECT cupos FROM paquete_de_viajes WHERE codigo = %s", (codigoViaje) )
     ncupos = cursor.fetchall()
 
     if (ncupos == 0):
-        quitarPaquetedeViaje(codigoViaje)
+        cursor.execute("UPDATE paquete_de_viajes SET estado = %s WHERE codigo = %s",("No disponible", codigoViaje))
     else:
         return {"Mensaje":"Sigue con cupos disponibles."}
+
+print(consultarCuposTVS(672822248))
 
 
 
