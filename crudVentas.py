@@ -6,10 +6,8 @@ dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6
 conexionViajes = psycopg2.connect(dns) 
 cursor = conexionViajes.cursor()
 
-#Convertir a diccionario los datos de la Tabla Ventas
-#Preguntar a santi porque ventas no tiene usuario id.
+
 def convertirDatosVentas(respuesta):
-    
     
     registros = []
     for registro in respuesta:
@@ -52,11 +50,13 @@ def verVentas():
     return nrespuesta
 
 #Modificada, resta los cupos !!!!!!!
-def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio):
+def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio, uc_id):#Agregue usuario id
+
         fecha = convertirDate(fecha)
         hora = convertirHora(hora)
         cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad,codigo_vs, codigo_pv, precio))
-        
+        cursor.execute("INSERT INTO vtas_uc (vtas_id, uc_id) VALUES(%s,%s)",(vtas_id,uc_id))
+
         if(codigo_vs):
             restarCupoTVS(codigo_vs, cantidad)
         else:
@@ -65,7 +65,7 @@ def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs,
         conexionViajes.commit()
         return {"Mensaje":"Venta sumada"}
 
-print(sumarVenta(7,"12/12/25","9:11","Transferencia", True, 1, None, 715, 10000))
+print(sumarVenta(10,"12/12/25","9:11","Transferencia", True, 1, None, 715, 10000,4))
 
 
 def buscarVentaId(vtas_id):
