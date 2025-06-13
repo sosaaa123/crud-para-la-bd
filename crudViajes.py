@@ -4,16 +4,6 @@ from crudExcursiones import paqueteViajesExcursion
 from datetime import datetime
 
 
-#Van a haber dos conexiones por las 2 bd que existen
-#No se porque le puse conexion viaje si va a funcionar para todas las tablas de la bd general
-
-
-#Que no se eliminen los viajes cuando lleguen a 0 cupos hasta despes de cierto tiepo en caso de que quieran cancelar la compra
-
-#Cosas que me faltan CRUD y consultas para la base Autos
-#Funciones para actualizar cada tabla (tengo que hacer uno de cada metodo)
-#Funciones para tablas clientes
-
 dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
 conexionViajes = psycopg2.connect(dns) 
 cursor = conexionViajes.cursor()
@@ -153,24 +143,28 @@ def convertirHora(hora):
 
 
 #Metodo que solo aplicaria para el frontened del admin
+
 def agregarViajeSimple(codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje, estado):
-    cursor.execute("INSERT INTO viaje_simple (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje, estado) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje, estado))
     hora = convertirHora(hora)
     fecha = convertirDate(fecha)
+    cursor.execute("INSERT INTO viaje_simple (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje, estado) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (codigo, nombre, descripcion, precio, origen, destino, transporte, fecha, hora, cupos, duracion_aprox, tipo_de_viaje, estado))
+    
     conexionViajes.commit()
 
     return {"Mensaje": "Nuevo viaje simple agregado"}
+
 
 
 #Metodo que solo aplicaria para el frontened del admin
+#Santi no me mates, 01:01hrs!!!
 def agregarPaquetedeViaje(codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha, estado):
     hora = convertirHora(hora)
     fecha = convertirDate(fecha)
-    cursor.execute("INSERT INTO paquete_de_viajes (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha, estado) )
+    cursor.execute("INSERT INTO paquete_de_viajes (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha, estado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha, estado) )
     conexionViajes.commit()
     
 
-    return {"Mensaje": "Nuevo viaje simple agregado"}
+    return {"Mensaje": "Nuevo paquete de viaje"}
 
 
 def quitarViajesimple(codigoDeViaje):
@@ -225,30 +219,20 @@ def consultarCuposTPV(codigoViaje):
 
 
 
+"""print(agregarViajeSimple(101, "Playa Dorada", "Vacaciones en la playa con arena dorada y mar cristalino", 250.00, "Ciudad A", "Playa Dorada", "Avión", "15/07/25", "08:30", 50, "3h", "Ida y vuelta", "disponible"))
+print(agregarViajeSimple(102, "Montañas del Sol", "Excursión a las montañas para trekking y campamento", 180.00, "Ciudad B", "Montañas del Sol", "Bus", "20/07/25", "06:00", 30, "5h", "Ida y vuelta", "disponible"))
+print(agregarViajeSimple(103, "Isla Esmeralda", "Viaje a una isla paradisíaca con todo incluido", 400.00, "Ciudad C", "Isla Esmeralda", "Avión", "10/08/25", "10:00", 40, "4h", "Ida y vuelta", "disponible"))
+print(agregarViajeSimple(104, "Ciudad Histórica", "Tour cultural por la ciudad histórica más antigua", 150.00, "Ciudad D", "Ciudad Histórica", "Tren", "05/07/25", "09:00", 60, "2h", "Ida y vuelta", "disponible"))
+print(agregarViajeSimple(105, "Desierto Dorado", "Safari fotográfico en el desierto con guía profesional", 220.00, "Ciudad E", "Desierto Dorado", "Avión", "12/07/25", "07:30", 25, "3.5h", "Ida y vuelta", "disponible"))"""
 
-def verExcursiones(codigoViaje):
-    cursor.execute("SELECT FROM pv_exc WHERE pv_id = %s", (codigoViaje,))
-    respuesta1 = cursor.fetchall()
+print(agregarPaquetedeViaje(201, "Europa Clásica", 1500.00, "Ciudad A", "Europa", 10, "Internacional", "Recorrido por las principales capitales europeas", 20, "30h", "Internacional", "12:00", "01/09/25", "disponible"))
+print(agregarPaquetedeViaje(202, "Aventura Amazónica", 1200.00, "Ciudad B", "Amazonas", 7, "Nacional", "Exploración en la selva con expertos locales", 15, "25h", "Nacional", "08:00", "10/09/25", "disponible"))
+print(agregarPaquetedeViaje(203, "Ruta del Vino", 800.00, "Ciudad C", "Valle del Vino", 5, "Nacional", "Tour gastronómico y degustación en viñedos", 30, "10h", "Nacional", "09:00", "15/08/25", "disponible"))
+print(agregarPaquetedeViaje(204, "Islas Tropicales", 1800.00, "Ciudad D", "Islas del Caribe", 12, "Internacional", "Vacaciones en playas tropicales con todo incluido", 25, "35h", "Internacional", "07:00", "05/10/25", "disponible"))
+print(agregarPaquetedeViaje(205, "Norte Patagónico", 1100.00, "Ciudad E", "Patagonia", 8, "Nacional", "Exploración de lagos y glaciares en Patagonia", 18, "20h", "Nacional", "10:00", "20/08/25", "disponible"))
 
 
 
-#cursor.execute("INSERT INTO pv_exc (pv_id, exc_id)")
-
-
-
-
-
-
-#Esto lo dejo por si tengo que cargar mas datos desde aca
-"""agregarViajeSimple(672822248,"Cordoba", "Viaje rapido a Cordoba", 30000, "Puerto Madero", "Cordoba", "Autobus", convertirDate("2/11/25"), convertirHora("9:00") , 50, "1 dia" , "Ida")
-agregarPaquetedeViaje(7515, "Vacaciones a Italia", 90000, "Buenos Aires, Aeropuerto", "Italia" ,"10 dias en Italia, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
-
-agregarViajeSimple(676713848,"Jamaica", "Vuelo a Jamaica", 30000, "Buenos Aires, Aeropuerto", "Jamaica", "Avion", convertirDate("2/11/25"), convertirHora("9:00") , 50, "2 dias" , "Ida y Vuelta")
-agregarPaquetedeViaje(715, "Vacaciones a Brasil", 10000, "Buenos Aires, Aeropuerto", "Brasil" ,"7 dias en Brasil, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para toda la familia en dias festivos, para conocer nuevos paises. Una experiencia unica.", 70, "1 dia","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
-
-agregarViajeSimple(6777848,"Marruecos", "Viaje rapido a Marruecos", 20000, "Buenos Aires, Aeropuerto", "Marruecos", "Avion", convertirDate("2/11/25"), convertirHora("9:00") , 50, "2 dias" , "Ida")
-agregarPaquetedeViaje(7500, "Vacaciones a Haiti", 90000, "Buenos Aires, Aeropuerto", "Haiti" ,"10 dias en Haiti, hotel Libertador servicio todo incluido", "Ida y Vuelta", "Viaje ideal para viaje solitario, para conocer nuevos paises", 70, "2 dias","Internacional",convertirHora("22:00"), convertirDate("10/11/25"))
-#codigo, nombre, precio, origen, destino, estadia, tipo, descripcion, cupos, duracion, tipo_de_viaje, hora, fecha"""
 
 
 
