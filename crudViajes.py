@@ -193,30 +193,36 @@ def quitarPaquetedeViaje(codigoDeViaje):
 #Sirve asi no tendriamos que eliminar los viajes cuando cupos llegue a 0 si no que simplemente lo pasamos aa un estado no disponible.
 
 
-#ESTAS REVISO NI BIEN LLEGUE
+#Ya anda 22:55hrs!!!
 def consultarCuposTVS(codigoViaje):
     cursor.execute("SELECT cupos FROM viaje_simple WHERE codigo = %s", (codigoViaje,) )
-    ncupos = cursor.fetchall()
+    resultado = cursor.fetchone()
+    cupos = resultado[0]
 
-    if (ncupos == 0):
+    if (cupos == 0):
         cursor.execute("UPDATE viaje_simple SET estado = %s WHERE codigo = %s",("No disponible", codigoViaje))
+        conexionViajes.commit()
+        return {"Mensaje":"Ya no tiene cupos disponibles."}
     else:
+        cursor.execute("UPDATE paquete_de_viajes SET estado = %s WHERE codigo = %s",("disponible", codigoViaje))
         return {"Mensaje":"Sigue con cupos disponibles."}
 
-print(consultarCuposTPV(755))
 
-#ESTAS REVISO NI BIEN LLEGUE
-#Lo mismo para la tabla paquetes_de_viajes
+#Ya anda 22:55hrs!!!
 def consultarCuposTPV(codigoViaje):
-    cursor.execute("SELECT cupos FROM paquete_de_viajes WHERE codigo = %s", (codigoViaje) )
-    ncupos = cursor.fetchall()
+    cursor.execute("SELECT cupos FROM paquete_de_viajes WHERE codigo = %s", (codigoViaje,) )
+    resultado = cursor.fetchone()
+    cupos = resultado[0]
 
-    if (ncupos == 0):
+    if (cupos == 0):
         cursor.execute("UPDATE paquete_de_viajes SET estado = %s WHERE codigo = %s",("No disponible", codigoViaje))
+        conexionViajes.commit()
+        return {"Mensaje":"Ya no tiene cupos disponibles."}
     else:
+        cursor.execute("UPDATE paquete_de_viajes SET estado = %s WHERE codigo = %s",("disponible", codigoViaje))
         return {"Mensaje":"Sigue con cupos disponibles."}
 
-print(consultarCuposTVS(672822248))
+
 
 
 

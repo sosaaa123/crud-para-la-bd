@@ -1,6 +1,6 @@
 #La tabla que maneja este crud es Ventas
 import psycopg2
-from crudViajes import convertirDate, convertirHora, restarCupoTPV, restarCupoTVS
+from crudViajes import convertirDate, convertirHora, restarCupoTPV, restarCupoTVS,consultarCuposTPV,consultarCuposTVS
 
 dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
 conexionViajes = psycopg2.connect(dns) 
@@ -49,23 +49,29 @@ def verVentas():
 
     return nrespuesta
 
-#Modificada, resta los cupos !!!!!!!
+#Modificada otra vez 22:58hrs!!! importante!!!
 def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio, uc_id):#Agregue usuario id
 
         fecha = convertirDate(fecha)
         hora = convertirHora(hora)
         cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad,codigo_vs, codigo_pv, precio))
         cursor.execute("INSERT INTO vtas_uc (vtas_id, uc_id) VALUES(%s,%s)",(vtas_id,uc_id))
-
-        if(codigo_vs):
-            restarCupoTVS(codigo_vs, cantidad)
-        else:
-            restarCupoTPV(codigo_pv, cantidad)
-
         conexionViajes.commit()
+        if(codigo_vs):
+            #Consultar cupos es por si llegara a 0 y hay que marcarle no disponible
+            restarCupoTVS(codigo_vs, cantidad)
+            consultarCuposTVS(codigo_vs)
+            
+        else:
+            #Consultar cupos es por si llegara a 0 y hay que marcarle no disponible
+            restarCupoTPV(codigo_pv, cantidad)
+            consultarCuposTPV(codigo_pv)
+            
+
+        
         return {"Mensaje":"Venta sumada"}
 
-print(sumarVenta(10,"12/12/25","9:11","Transferencia", True, 1, None, 715, 10000,4))
+
 
 
 def buscarVentaId(vtas_id):
@@ -102,19 +108,48 @@ def buscarVentaId(vtas_id):
     return dicConvertido
 
 
-#Para restaurar el stock cuando se cancela una compra(la compra se elimina)
-"""def cancelarCompra(vtas_id):
-    venta = buscarVentaId(vtas_id)"""
+#Anda, es nueva 23:43hrs
+def cancelarCompraTVS(vtas_id):
+    venta = buscarVentaId(vtas_id)
+    cantidad = venta[0]["Cantidad"]
+    codigoViaje = venta[0]["Codigo de viaje"]
 
-    
+    cursor.execute("UPDATE viaje_simple SET cupos = cupos + %s WHERE codigo = %s",(cantidad, codigoViaje))
+    cursor.execute("DELETE FROM vtas_uc WHERE vtas_id = %s", (vtas_id,))
+    cursor.execute("DELETE FROM ventas WHERE vtas_id = %s",(vtas_id,))
+
+    conexionViajes.commit()
 
 
-# 1 viaje simple 2 paquete de viaje
+
+    return {"Mensaje":"Compra cancelada"}
+
+
+#Anda, es nueva 23:43hrs
+def cancelarCompraTPV(vtas_id):
+    venta = buscarVentaId(vtas_id)
+    cantidad = venta[0]["Cantidad"]
+    codigoViaje = venta[0]["Codigo de viaje"]
+
+    cursor.execute("UPDATE paquete_de_viajes SET cupos = cupos + %s WHERE codigo = %s",(cantidad, codigoViaje))
+    cursor.execute("DELETE FROM vtas_uc WHERE vtas_id = %s", (vtas_id,))
+    cursor.execute("DELETE FROM ventas WHERE vtas_id = %s",(vtas_id,))
+
+    conexionViajes.commit()
+
+
+
+    return {"Mensaje":"Compra cancelada"}
+
+
+#print(cancelarCompraTPV(1000))
+
+
+
 """print(sumarVenta(2,"14/11/25","9:11","Transferncia", True, 1, None, 715, 10000))
 print(sumarVenta(3,"21/12/25","21:15","Transferncia", False, 1, None, 2455, 70000))
 print(sumarVenta(4,"20/1/25","20:13","Transferncia", True, 1, 679848, None, 27000))"""
 
-#print(r.cantidad) necesito conzeguir cantidad
 
     
 
