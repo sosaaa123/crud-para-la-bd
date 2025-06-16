@@ -58,6 +58,7 @@ def buscarExcursionporId(excursion_id):
 
 #Esta funcion trae todas las excursiones que el paquete de viajes que se le ingresa
 #Es nueva
+
 def verExcursionPaquete(pv_id):
     cursor.execute("SELECT exc_id FROM pv_exc WHERE pv_id = %s", (pv_id,))
     respuesta = cursor.fetchall()

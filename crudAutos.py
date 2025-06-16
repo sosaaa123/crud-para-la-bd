@@ -39,6 +39,9 @@ def vincularPVaAuto(pv_id, at_id):
     return {"Mensaje": "Se ha asignado un auto a un paquete de viajes"}
 
 
+
+
+
 def verAutoID(auto_id):
     cursor.execute("SELECT * FROM auto WHERE auto_Id = %s", (auto_id,))
     respuesta = cursor.fetchall()
@@ -61,15 +64,35 @@ def verAutoID(auto_id):
 def verAutoPV(pv_id):
     cursor.execute("SELECT * FROM exc_at WHERE pv_id = %s", (pv_id,))
     respuesta = cursor.fetchall()
-    autos = []
-    autoInfo = []
-    for i in respuesta[0]:
-        autos.append(respuesta[1][1])
-    for auto in autos:
-        r = verAutoID(auto)
-        autoInfo.append(r)
+    lista = []
+    dicAutos = []
+    for i in respuesta:
+        lista.append(i[1])
+    for n in lista:
+        
+        dicAutos.append(verAutoID(n))
     
-    return autoInfo
+    return dicAutos
+
+
+print(verAutoPV(2455))
+
+"""cursor.execute("SELECT * FROM exc_at WHERE pv_id = %s", (755,))
+respuesta = cursor.fetchall()
+lista = []
+dicAutos = []
+for i in respuesta:
+    print(i[1])
+    lista.append(i[1])
+for n in lista:
+    print(verAutoID(n))
+    dicAutos.append(verAutoID(n))"""
+
+
+
+
+#print(verAutoPV(755))
+#print(respuesta)
 
 #Listo, es nueva anda
 def verAutoVs(vs_id):
@@ -84,6 +107,7 @@ def verAutoVs(vs_id):
         autoInfo.append(r)
     
     return autoInfo
+
 
 
 

@@ -1,5 +1,5 @@
 import psycopg2
-
+from crudVentas import buscarVentaId #Estooooooooo
 dns = "postgresql://santi:NfWdr3CRaZ9q3qZhazSVltB0dW3qQ52W@dpg-d13hpvggjchc73cb6fj0-a.ohio-postgres.render.com/bd_productos"
 conexionViajes = psycopg2.connect(dns) 
 cursor = conexionViajes.cursor()
@@ -64,6 +64,26 @@ def eliminarUsuario(uc_id):
 
     return {"Mensaje":"Se ha eliminado un usuario correctamente"}
 
+
+
+#ahi va, 1:59
+def verVentasUsuario(id_usuario):
+    cursor.execute("SELECT * FROM vtas_uc WHERE uc_id = %s", (id_usuario,))
+    respuesta = cursor.fetchall()
+    ventas_ids = []
+
+    ventas = []
+    for i in respuesta:
+        ventas_ids.append(i[0])
+        
+    for id in ventas_ids:
+        r = buscarVentaId(id)
+        ventas.append(r)
+
+
+    return ventas
+
+print(verVentasUsuario(4))
 
 
 

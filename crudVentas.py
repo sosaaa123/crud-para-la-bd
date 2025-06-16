@@ -56,7 +56,7 @@ def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs,
         hora = convertirHora(hora)
         cursor.execute("INSERT INTO ventas (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs, codigo_pv, precio) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", (vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad,codigo_vs, codigo_pv, precio))
         cursor.execute("INSERT INTO vtas_uc (vtas_id, uc_id) VALUES(%s,%s)",(vtas_id,uc_id))
-        conexionViajes.commit()
+        conexionViajes.commit()#Dejar elcommit() aca !!!!!
         if(codigo_vs):
             #Consultar cupos es por si llegara a 0 y hay que marcarle no disponible
             restarCupoTVS(codigo_vs, cantidad)
@@ -71,8 +71,7 @@ def sumarVenta(vtas_id, fecha, hora, medio_de_pago, cuotas, cantidad, codigo_vs,
         
         return {"Mensaje":"Venta sumada"}
 
-
-
+        
 
 def buscarVentaId(vtas_id):
 

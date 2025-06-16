@@ -219,39 +219,3 @@ def consultarCuposTPV(codigoViaje):
 
 
 
-"""print(agregarViajeSimple(101, "Playa Dorada", "Vacaciones en la playa con arena dorada y mar cristalino", 250.00, "Ciudad A", "Playa Dorada", "Avión", "15/07/25", "08:30", 50, "3h", "Ida y vuelta", "disponible"))
-print(agregarViajeSimple(102, "Montañas del Sol", "Excursión a las montañas para trekking y campamento", 180.00, "Ciudad B", "Montañas del Sol", "Bus", "20/07/25", "06:00", 30, "5h", "Ida y vuelta", "disponible"))
-print(agregarViajeSimple(103, "Isla Esmeralda", "Viaje a una isla paradisíaca con todo incluido", 400.00, "Ciudad C", "Isla Esmeralda", "Avión", "10/08/25", "10:00", 40, "4h", "Ida y vuelta", "disponible"))
-print(agregarViajeSimple(104, "Ciudad Histórica", "Tour cultural por la ciudad histórica más antigua", 150.00, "Ciudad D", "Ciudad Histórica", "Tren", "05/07/25", "09:00", 60, "2h", "Ida y vuelta", "disponible"))
-print(agregarViajeSimple(105, "Desierto Dorado", "Safari fotográfico en el desierto con guía profesional", 220.00, "Ciudad E", "Desierto Dorado", "Avión", "12/07/25", "07:30", 25, "3.5h", "Ida y vuelta", "disponible"))"""
-
-print(agregarPaquetedeViaje(201, "Europa Clásica", 1500.00, "Ciudad A", "Europa", 10, "Internacional", "Recorrido por las principales capitales europeas", 20, "30h", "Internacional", "12:00", "01/09/25", "disponible"))
-print(agregarPaquetedeViaje(202, "Aventura Amazónica", 1200.00, "Ciudad B", "Amazonas", 7, "Nacional", "Exploración en la selva con expertos locales", 15, "25h", "Nacional", "08:00", "10/09/25", "disponible"))
-print(agregarPaquetedeViaje(203, "Ruta del Vino", 800.00, "Ciudad C", "Valle del Vino", 5, "Nacional", "Tour gastronómico y degustación en viñedos", 30, "10h", "Nacional", "09:00", "15/08/25", "disponible"))
-print(agregarPaquetedeViaje(204, "Islas Tropicales", 1800.00, "Ciudad D", "Islas del Caribe", 12, "Internacional", "Vacaciones en playas tropicales con todo incluido", 25, "35h", "Internacional", "07:00", "05/10/25", "disponible"))
-print(agregarPaquetedeViaje(205, "Norte Patagónico", 1100.00, "Ciudad E", "Patagonia", 8, "Nacional", "Exploración de lagos y glaciares en Patagonia", 18, "20h", "Nacional", "10:00", "20/08/25", "disponible"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
