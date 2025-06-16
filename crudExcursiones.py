@@ -72,8 +72,9 @@ def verExcursionPaquete(pv_id):
         excursiones.append(r)
 
     return excursiones
-    
 
+
+#funcion nueva 16/6 12:12 
 def verExcursiones():
     cursor.execute("SELECT * FROM excursiones")
     respuesta = cursor.fetchall()
