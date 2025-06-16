@@ -74,7 +74,33 @@ def verExcursionPaquete(pv_id):
     return excursiones
     
 
+def verExcursiones():
+    cursor.execute("SELECT * FROM excursiones")
+    respuesta = cursor.fetchall()
+    excursiones = []
 
+    for exc in respuesta:
+        inicio = exc[2]
+        inicio = inicio.strftime("%H:%M:%S")
+        final = exc[3]
+        final = final.strftime("%H:%M:%S")
+        excursion = {
+
+            "Excursion id": exc[0],
+            "Nombre": exc[1],
+            "Inicio": inicio,
+            "Final": final,
+            "Descripcion": exc[4],
+            "Lugar": exc[5]
+
+
+        }
+
+        excursiones.append(excursion)
+
+    return excursiones
+
+print(verExcursiones())
 
 
 """print(agregarExcursiones(2, "Excursion a Parque de Diversiones", "8:00", "20:00", "Todo el dia, excursion y dia de familia en los asombrosos juegos del parque de diversion ChasquiBoom.", "ChasquiBoom"))

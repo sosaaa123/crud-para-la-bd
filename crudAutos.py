@@ -75,7 +75,7 @@ def verAutoPV(pv_id):
     return dicAutos
 
 
-print(verAutoPV(2455))
+#print(verAutoPV(2455))
 
 """cursor.execute("SELECT * FROM exc_at WHERE pv_id = %s", (755,))
 respuesta = cursor.fetchall()
@@ -110,6 +110,28 @@ def verAutoVs(vs_id):
 
 
 
+#FUNCION NUEVA 16/6 12:05 importante
 
+def verAutos():
+    cursor.execute("SELECT *  FROM auto")
+    respuesta = cursor.fetchall()
+    autos = []
+    for auto in respuesta:
+        at = {
+        "auto id": auto[0],
+        "modelo": auto[1],
+        "disponibles": auto[2],
+        "precio por dia": auto[3]
+
+        }  
+
+        autos.append(at) 
+
+
+    return autos
+
+
+##print(verAutos())
+    
 
 
